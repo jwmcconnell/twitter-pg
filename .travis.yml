@@ -1,4 +1,7 @@
 language: node_js
 node_js: node
-services: mongodb
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database travis;' -U postgres
 env: DATABASE_URL=postgres://localhost:5432/travis
