@@ -55,4 +55,19 @@ describe('app routes', () => {
         testTweet(res.body);
       });
   });
+
+  it('gets all tweets', () => {
+    Promise.all([
+      createTweet({ title: 'tweet 1', body: 'tweet body 1', author: 'author 1' }),
+      createTweet({ title: 'tweet 2', body: 'tweet body 2', author: 'author 2' }),
+      createTweet({ title: 'tweet 3', body: 'tweet body 3', author: 'author 1' }),
+      createTweet({ title: 'tweet 4', body: 'tweet body 4', author: 'author 2' }),
+      createTweet({ title: 'tweet 5', body: 'tweet body 5', author: 'author 3' }),
+    ]);
+    return request(app)
+      .get('/api/v1/tweets')
+      .then(res => {
+        expect(res.body).toHaveLength(5);
+      });
+  });
 });
