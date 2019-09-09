@@ -14,13 +14,42 @@ describe('app routes', () => {
     client.end();
   });
 
-  it('creates a note', () => {
+  const TEST_TWEET = { 
+    title: 'my tweet', 
+    body: 'this is a great tweet', 
+    author: 'jack' 
+  };
+
+  const createTweet = (tweet = TEST_TWEET) => {
     return request(app)
       .post('/api/v1/tweets')
-      .send({ title: 'my tweet', body: 'this is a great tweet', author: 'jack' })
+      .expect(200)
+      .send(tweet);
+  };
+
+  it('creates a note', () => {
+    return createTweet()
       .then(res => {
         expect(res.body).toEqual({
-          id: 1,
+          id: expect.any(Number),
+          author: 'jack',        
+          title: 'my tweet',
+          body: 'this is a great tweet',
+          created: expect.any(String),
+        });
+      });
+  });
+
+  it('gets a tweet by its id', () => {
+    return createTweet()
+      .then(res => {
+        return request(app)
+          .get(`/api/v1/tweets/${res.body.id}`)
+          .expect(200);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          id: expect.any(Number),
           author: 'jack',        
           title: 'my tweet',
           body: 'this is a great tweet',
