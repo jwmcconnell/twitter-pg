@@ -70,4 +70,24 @@ describe('app routes', () => {
         expect(res.body).toHaveLength(5);
       });
   });
+
+  it('updates a tweet', () => {
+    return createTweet()
+      .then(({ body }) => {
+        body.title = 'updated title';
+        return request(app)
+          .put(`/api/v1/tweets/${body.id}`)
+          .send(body)
+          .expect(200);
+      })
+      .then(({ body }) => {
+        expect(body).toEqual({
+          id: expect.any(Number),
+          author: 'jack',        
+          title: 'updated title',
+          body: 'this is a great tweet',
+          created: expect.any(String),
+        });
+      });
+  });
 });
