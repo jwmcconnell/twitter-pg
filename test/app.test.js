@@ -90,4 +90,16 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('deletes a tweet', () => {
+    return createTweet()
+      .then(({ body }) => {
+        return request(app)
+          .delete(`/api/v1/tweets/${body.id}`)
+          .expect(200);
+      })
+      .then(({ body }) => {
+        testTweet(body);
+      });
+  });
 });
