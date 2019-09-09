@@ -2,7 +2,7 @@
 const client = require('../lib/utils/client');
 
 client.query(`
-    DROP TABLE IF EXISTS notes;
+    DROP TABLE IF EXISTS tweets;
 `)
   .then(
     () => console.log('drop tables complete'),
