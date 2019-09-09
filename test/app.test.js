@@ -27,16 +27,20 @@ describe('app routes', () => {
       .send(tweet);
   };
 
+  const testTweet = tweet => {
+    expect(tweet).toEqual({
+      id: expect.any(Number),
+      author: 'jack',        
+      title: 'my tweet',
+      body: 'this is a great tweet',
+      created: expect.any(String),
+    });
+  };
+
   it('creates a note', () => {
     return createTweet()
       .then(res => {
-        expect(res.body).toEqual({
-          id: expect.any(Number),
-          author: 'jack',        
-          title: 'my tweet',
-          body: 'this is a great tweet',
-          created: expect.any(String),
-        });
+        testTweet(res.body);
       });
   });
 
@@ -48,13 +52,7 @@ describe('app routes', () => {
           .expect(200);
       })
       .then(res => {
-        expect(res.body).toEqual({
-          id: expect.any(Number),
-          author: 'jack',        
-          title: 'my tweet',
-          body: 'this is a great tweet',
-          created: expect.any(String),
-        });
+        testTweet(res.body);
       });
   });
 });
